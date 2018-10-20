@@ -16,57 +16,52 @@ public class clientA
 	public static String gp,typ,dest_name;
 	public static int mode,key;
 
-	public static void connect_to_Server(String g,String t,String d) throws IOException
+	public static void connect_to_Server(String g,String d,int p,int m) throws IOException
 	{
 		try{
 		soc = new Socket(ip,po);
 		input = new BufferedReader(new InputStreamReader(soc.getInputStream()));
 		output = new PrintWriter(soc.getOutputStream(),true);
 		output.println(g);
-		output.println(t);
 		output.println(d);
+		output.println(p);
+		output.println(m);
 		}
 		catch(IOException e)
 		{System.out.println(""+e);}
-		
+	}
+
+	public static String local_encrypt(String s,int k)
+	{
+		byte[] ch = s.getBytes();
+		for(int i=0;i<s.length();i++)
+		{
+			ch[i]=(byte)(ch[i]+(i)+k);
+		}
+
+		return s;
 	}
 	public static void upload() throws IOException
 	{
 		//TODO GUI
-		System.out.println("img or txt");
-		typ = scan.next();
-	
-		if(typ.equals("txt"))
-			up_txt();
-		if(typ.equals("img"))
-			up_img();
-	
-	
-	}
-	public static void up_txt() throws IOException
-	{
-		//todo GUI
 		System.out.println("Enter file path");
 		String path = scan.next();
 		System.out.println("Enter key and Encryption type");
-		scan.
-		Scanner fin = new Scanner(new File(path));
+		int p_key=scan.nextInt();
+		int m=scan.nextInt();
 		System.out.println("Destination name : ");
+		Scanner fin = new Scanner(new File(path));
 		dest_name = scan.next(); 
-		connect_to_Server(gp,typ,dest_name);		
+		connect_to_Server(gp,dest_name,p_key,m);		
 		
 		//sending whole file linewise, to the server
-		
 		while(fin.hasNext())
 		{
-			output.println(fin.nextLine());
+			output.println(local_encrypt(fin.nextLine(),p_key));
 		}
 
 	}
-	public static void up_img()
-	{
-
-	}
+	
 	public static void main(String[] args) throws IOException
 	{
 		scan = new Scanner(System.in);
@@ -77,8 +72,6 @@ public class clientA
 
 		if(gp.equals("put"))
 			upload();
-
 		//get
-
 	}
 }

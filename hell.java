@@ -17,45 +17,37 @@ public class hell{
 
 	public static String encrypt(String cl_in_str,int m, int k)
 	{//function for some kind of encryption
-		char[] ch = cl_in_str.toCharArray();
+		byte[] ch = cl_in_str.getBytes();
 		if(m==1)
-		for(int i=0;i<str.length();i++)
+		for(int i=0;i<cl_in_str.length();i++)
 		{
-			ch[i]=(char)(ch[i]+(i)+k);
+			ch[i]=(byte)(ch[i]+(i)+k);
 		}
 		else
-		for(int i=0;i<str.length();i++)
+		for(int i=0;i<cl_in_str.length();i++)
 		{
-			ch[i]=(char)(ch[i]+(i*i)-i+k);
+			ch[i]=(byte)(ch[i]+(i*i)-i+k);
 		}
 		
 
+		cl_in_str=new String(ch);
 		return cl_in_str;
 	}
+	
 	public static void upload() throws IOException
-	{
-		if(typ.equals("txt"))
-			{up_txt();}
-		else if (typ.equals("img"));
-			up_img();
-	}
-
-	public static void up_img()
-	{
-		System.out.println("image_upload part");
-	}
-
-	public static void up_txt() throws IOException
 	{
 		
 		fout = new PrintWriter(new File(dest_name));
 		String msg;
+	
+		key=Integer.parseInt(input.readLine());
+		mode=Integer.parseInt(input.readLine());
 		try{
 			while((msg=input.readLine())!=null)
 			{
-				msg = encrypt(msg,mode);
+				msg =new String(encrypt(msg,mode,key));
 				fout.println(msg);
-				//todo : encrypt and store in database
+				//todo : store in database
 			
 			}	//while end
 		}		//try of while(true) ends
@@ -82,11 +74,8 @@ public class hell{
 					
 					/*
 					output.println(sock.getRemoteSocketAddress().toString());
-					*/
-					//tryto char[] msg;
-					
+					*/					
 					gp = input.readLine();
-					typ = input.readLine();
 					dest_name = input.readLine();
 					if(gp.equals("put"))
 						upload();
