@@ -13,6 +13,7 @@ public class hell{
 	public static BufferedReader input;
 	public static PrintWriter output;
 	public static PrintWriter fout;
+	public static Scanner fin;
 	public static int mode,key;
 
 	public static String encrypt(String cl_in_str,int m, int k)
@@ -30,6 +31,22 @@ public class hell{
 		}
 		
 
+		cl_in_str=new String(ch);
+		return cl_in_str;
+	}
+	public static String decrypt(String cl_in_str,int m, int k)
+	{
+		byte[] ch = cl_in_str.getBytes();
+		if(m==1)
+		for(int i =0;i<cl_in_str.length();i++)
+		{
+			ch[i]=(byte)(ch[i]-(i)-k);
+		}
+		else
+		for(int i=0;i<cl_in_str.length();i++)
+		{
+			ch[i]=(byte)(ch[i]-(i*i)-i-k);
+		}
 		cl_in_str=new String(ch);
 		return cl_in_str;
 	}
@@ -56,7 +73,25 @@ public class hell{
 			sock.close();
 		}//finally of while(true) ends
 	}
-
+	public static void download() throws IOException
+	{
+		fin = new Scanner(new File(dest_name));
+		String msg;
+		key=Integer.parseInt(input.readLine());
+		mode=Integer.parseInt(input.readLine());
+		//todo check in database for the matching of key and mode and filename
+		try{
+		while((msg=fin.nextLine())!=null)
+		{
+			msg=new String(decrypt(msg,mode,key));
+			output.println(msg);
+		}
+		}
+		finally{
+			fin.close();
+			sock.close();
+		}
+	}
 	public static void main(String[] args) throws IOException {
 		/*todo:
 		create table Chatlogs
@@ -79,6 +114,8 @@ public class hell{
 					dest_name = input.readLine();
 					if(gp.equals("put"))
 						upload();
+					if(gp.equals("get"))
+						download();
 
 				}
 				finally{

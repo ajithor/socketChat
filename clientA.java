@@ -10,6 +10,7 @@ public class clientA
 	public static Socket soc;
 	public static BufferedReader input;
 	public static PrintWriter output;
+	public static PrintWriter fout;
 	public static String ip = "127.0.0.1";
 	public static int po = 9090;
 	public static Scanner scan;
@@ -61,6 +62,29 @@ public class clientA
 		}
 
 	}
+	public static void download() throws IOException
+	{
+		System.out.println("Enter filename(exact) : ");
+		String dest=scan.next();
+		System.out.println("Entered key, encrypted type : ");
+		int p_key=scan.nextInt();
+		int m=scan.nextInt();
+		connect_to_Server(gp,dest,p_key,m);
+		//todo get msg from server if his stuff are authenticated
+		System.out.println("Enter path where the decrypted file is to be stored : ");
+		String path = scan.next();
+		String msg;
+		fout = new PrintWriter(new File(path));
+		try{
+		while((msg=input.readLine())!=null)
+		{
+			fout.println(msg);
+		}
+		}
+		finally{
+			fout.close();
+		}
+	}
 	
 	public static void main(String[] args) throws IOException
 	{
@@ -72,6 +96,8 @@ public class clientA
 
 		if(gp.equals("put"))
 			upload();
+		else if(gp.equals("get"))
+			download();
 		//get
 	}
 }
