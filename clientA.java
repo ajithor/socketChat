@@ -1,3 +1,4 @@
+package p;
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
@@ -45,14 +46,14 @@ public class clientA
 	public static void upload() throws IOException
 	{
 		//TODO GUI
-		System.out.println("Enter file path");
-		String path = scan.next();
-		System.out.println("Enter key and Encryption type");
-		int p_key=scan.nextInt();
-		int m=scan.nextInt();
-		System.out.println("Destination name : ");
+		String path =frup.textField1.getText() ;
+	
+		int p_key=Integer.parseInt(frup.textField2.getText() );
+		int m=frup.sleenc;
+		gp="put";
+		dest_name = frup.textField3.getText();
 		Scanner fin = new Scanner(new File(path));
-		dest_name = scan.next(); 
+		
 		connect_to_Server(gp,dest_name,p_key,m);		
 		
 		//sending whole file linewise, to the server
@@ -64,15 +65,16 @@ public class clientA
 	}
 	public static void download() throws IOException
 	{
-		System.out.println("Enter filename(exact) : ");
-		String dest=scan.next();
-		System.out.println("Entered key, encrypted type : ");
-		int p_key=scan.nextInt();
-		int m=scan.nextInt();
+		
+		String dest=frdw.textField4.getText();
+		
+		int p_key=Integer.parseInt(frdw.textField5.getText());
+		int m=1;
+		gp="get";
 		connect_to_Server(gp,dest,p_key,m);
 		//todo get msg from server if his stuff are authenticated
-		System.out.println("Enter path where the decrypted file is to be stored : ");
-		String path = scan.next();
+	
+		String path = frdw.textField6.getText();
 		String msg;
 		fout = new PrintWriter(new File(path));
 		try{
@@ -88,16 +90,6 @@ public class clientA
 	
 	public static void main(String[] args) throws IOException
 	{
-		scan = new Scanner(System.in);
 		
-		//todo GUI
-		System.out.println ( "get or put");
-		gp = scan.next();
-
-		if(gp.equals("put"))
-			upload();
-		else if(gp.equals("get"))
-			download();
-		//get
 	}
 }
