@@ -1,0 +1,10 @@
+I wont even bother the Eclipse or other IDE users.
+For those who use the Command line interface, follow this:
+*)Store files clientA.java, fr1.java, frup.java, frdw.java in a folder, named "p"(package name)
+*)use the terminal to travel to the folder p.
+*) in p, type this command :
+	javac -cp . clientA.java fr1.java frup.java frdw.java
+*)Now travel to the parent directory of p (using cd ..)
+*) After the compilation is successful; In a separate terminal, complie the server, with javac hell.java
+*)Then boot the server by typing java hell
+*)Now run the fr1, by typing java fr1
