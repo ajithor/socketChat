@@ -54,12 +54,20 @@ public class clientA
 		Scanner fin = new Scanner(new File(path));
 		dest_name = scan.next(); 
 		connect_to_Server(gp,dest_name,p_key,m);		
-		
+		//check if all ok
+		int ack =Integer.parseInt(input.readLine());
+		if(ack>0)
 		//sending whole file linewise, to the server
+		{
 		while(fin.hasNext())
 		{
 			output.println(local_encrypt(fin.nextLine(),p_key));
 		}
+		}
+		else
+			//todo GUI
+			System.out.println("All not OK! lol");
+
 
 	}
 	public static void download() throws IOException
@@ -71,6 +79,16 @@ public class clientA
 		int m=scan.nextInt();
 		connect_to_Server(gp,dest,p_key,m);
 		//todo get msg from server if his stuff are authenticated
+		//get proper authenticated or not
+		int ack = Integer.parseInt(input.readLine());
+		if(ack==0)
+			//todo GUI like a dialog box and log the client out.
+			System.out.println("Input mismatch in database");
+		else if(ack>1)
+			System.out.println("Multiple matches");//shouldnt be allowed
+
+		else
+		{
 		System.out.println("Enter path where the decrypted file is to be stored : ");
 		String path = scan.next();
 		String msg;
@@ -84,6 +102,8 @@ public class clientA
 		finally{
 			fout.close();
 		}
+		}
+
 	}
 	
 	public static void main(String[] args) throws IOException
