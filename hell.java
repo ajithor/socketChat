@@ -1,3 +1,5 @@
+package p;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -5,7 +7,6 @@ import java.lang.String;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.IOException;
-import java.sql.*;
 
 public class hell{
 	public static String gp,typ,dest_name;
@@ -16,28 +17,6 @@ public class hell{
 	public static PrintWriter fout;
 	public static Scanner fin;
 	public static int mode,key;
-	public static Statement stm;
-	public static Connection con;
-	public static int count = 1;
-	public static ResultSet rs;
-	
-	public static void db_connect() throws SQLException
-	{
-		try{
-		Class.forName("com.mysql.jdbc.Driver");
-		con = DriverManager.getConnection("jdbc:mysql://localhost/jdb","root","root123");
-		try{
-		stm = con.createStatement();
-		}
-		catch(SQLException e)
-		{System.out.println("Execp "+ e);}		
-		//PreparedStatement pstm = con.prepareStatement();
-		}
-		catch(SQLException e)
-		{System.out.println("Excep : "+e);}
-		catch(ClassNotFoundException e )
-		{System.out.println("Excep : "+e);}
-	}
 
 	public static String encrypt(String cl_in_str,int m, int k)
 	{//function for some kind of encryption
@@ -45,7 +24,7 @@ public class hell{
 		if(m==1)
 		for(int i=0;i<cl_in_str.length();i++)
 		{
-			ch[i]=(byte)(ch[i]+(i%5)+k);
+			ch[i]=(byte)(ch[i]+(i)+k);
 		}
 		else
 		for(int i=0;i<cl_in_str.length();i++)
@@ -63,7 +42,7 @@ public class hell{
 		if(m==1)
 		for(int i =0;i<cl_in_str.length();i++)
 		{
-			ch[i]=(byte)(ch[i]-(i%5)-k);
+			ch[i]=(byte)(ch[i]-(i)-k);
 		}
 		else
 		for(int i=0;i<cl_in_str.length();i++)
@@ -78,28 +57,10 @@ public class hell{
 	{
 		
 		fout = new PrintWriter(new File(dest_name));
-		
+		String msg;
+	
 		key=Integer.parseInt(input.readLine());
 		mode=Integer.parseInt(input.readLine());
-		
-		//todo first, check if already exists.
-
-		try{
-		count ++;
-		String db_upload = "insert into Rot values("+count+",'"+dest_name+"');";
-		stm.executeUpdate(db_upload);
-
-		db_upload = "insert into Gen values ("+key+","+mode+","+count+");";
-		stm.executeUpdate(db_upload);
-
-		//send back file id to client
-		output.println(count);
-		}
-		catch(SQLException e)
-		{System.out.println("Excep : "+e);}
-		
-
-		String msg;
 		try{
 			while((msg=input.readLine())!=null)
 			{
@@ -121,42 +82,16 @@ public class hell{
 		key=Integer.parseInt(input.readLine());
 		mode=Integer.parseInt(input.readLine());
 		//todo check in database for the matching of key and mode and filename
-		int cn=-1;
 		try{
-		String db_download = "Select g.file_id,g.mode from Gen g,Rot r where g.file_id=r.file_id and g.secret_key = "+key+" and r.file_name='"+dest_name+"';";
-		rs = stm.executeQuery(db_download);
-
-		//find number of matching rows
-		rs.last();
-		cn=rs.getRow();
-		}
-		catch(SQLException e)
-		{System.out.println("Excep :"+e);}
-		if(cn==0)				//no matching files
-		{
-			output.println(-1);
-		}
-		else if(cn>1)			//more than 1 matching filename-key-mod(should be not allowed during upload)
-		{
-			output.println(0);
-		}
-		else 					//perfect match 
-		{
-			output.println(1);
-			
-		try{
-		mode = rs.getInt(2);
 		while((msg=fin.nextLine())!=null)
 		{
 			msg=new String(decrypt(msg,mode,key));
 			output.println(msg);
 		}
 		}
-		catch(SQLException e){}
 		finally{
 			fin.close();
 			sock.close();
-		}
 		}
 	}
 	public static void main(String[] args) throws IOException {
@@ -166,15 +101,6 @@ public class hell{
 		*/
 		System.out.println("Server Booted Successfully");
 		listener = new ServerSocket(9090);
-		try{
-		db_connect();
-		rs=stm.executeQuery("select max(file_id) from Rot");
-		rs.next();
-		count=rs.getInt(1);
-		}
-		catch(SQLException e)
-		{System.out.println("Execp "+ e);}
-	
 		try{
 			while(true)
 			{
@@ -206,4 +132,3 @@ public class hell{
 		}
 	}
 }
-

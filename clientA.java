@@ -67,8 +67,10 @@ public class clientA
 		}
 		else
 			//todo GUI
-			System.out.println("All not OK! lol");
-
+		{
+		 frup frr=new frup();
+			frr.somethingwrong();
+		}
 	}
 	public static void download() throws IOException
 	{
@@ -82,9 +84,12 @@ public class clientA
 		//todo get msg from server if his stuff are authenticated
 		int ack = Integer.parseInt(input.readLine());
 		if(ack==0)
-			//todo GUI like a dialog box and log the client out.
-			System.out.println("Input mismatch in database");
-		else if(ack>1)
+		{
+		 frdw frd=new frdw();
+			frd.failed();
+		
+		}
+			else if(ack>1)
 			System.out.println("Multiple matches");//shouldnt be allowed
 
 		else

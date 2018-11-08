@@ -1,5 +1,5 @@
 package p;
-import java.awt.BorderLayout;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -20,6 +20,12 @@ public class frup extends JFrame {
 	public static JTextField textField1;
 	public static  JTextField textField2;
 	public static  JTextField textField3;
+	public  void somethingwrong()
+	{
+		dispose();
+		JOptionPane.showMessageDialog(null,"Somethings Wrong");
+		
+	}
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
