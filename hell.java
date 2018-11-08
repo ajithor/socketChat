@@ -123,7 +123,7 @@ public class hell{
 		//todo check in database for the matching of key and mode and filename
 		int cn=-1;
 		try{
-		String db_download = "Select g.file_id from Gen g,Rot r where g.file_id=r.file_id and g.secret_key = "+key+" and g.mode = "+mode+" and r.file_name='"+dest_name+"';";
+		String db_download = "Select g.file_id,g.mode from Gen g,Rot r where g.file_id=r.file_id and g.secret_key = "+key+" and r.file_name='"+dest_name+"';";
 		rs = stm.executeQuery(db_download);
 
 		//find number of matching rows
@@ -141,8 +141,9 @@ public class hell{
 			output.println(0);
 		}
 		else 					//perfect match 
-			output.println(1);
 		{
+			output.println(1);
+			mode = rs.getInt(2);
 		try{
 		while((msg=fin.nextLine())!=null)
 		{
