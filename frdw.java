@@ -1,5 +1,5 @@
 package p;
-import java.awt.BorderLayout;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -14,12 +14,17 @@ import java.io.IOException;
 import java.awt.event.ActionEvent;
 
 public class frdw extends JFrame {
-
+  
 	private JPanel contentPane;
 	public static  JTextField textField4;
 	public static  JTextField textField5;
 	public static  JTextField textField6;
-
+	  public void failed()
+	    {
+	    	
+	    	JOptionPane.showMessageDialog(null, "File Not Found");
+	    	dispose();
+	    }
 	/**
 	 * Launch the application.
 	 */
