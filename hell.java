@@ -143,14 +143,16 @@ public class hell{
 		else 					//perfect match 
 		{
 			output.println(1);
-			mode = rs.getInt(2);
+			
 		try{
+		mode = rs.getInt(2);
 		while((msg=fin.nextLine())!=null)
 		{
 			msg=new String(decrypt(msg,mode,key));
 			output.println(msg);
 		}
 		}
+		catch(SQLException e){}
 		finally{
 			fin.close();
 			sock.close();
